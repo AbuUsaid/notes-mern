@@ -74,7 +74,7 @@ app.put('/api/notes/:id', async (req, res) => {
       throw new Error('An error occured while updating a note.');
     }
 
-    res.status(201).json(data);
+    res.status(200).json(data);
   } catch (error) {
     res
       .status(500)
@@ -93,7 +93,7 @@ app.delete('/api/notes/:id', async (req, res) => {
       throw new Error('An error occured while deleting a note.');
     }
 
-    res.status(201).json(data);
+    res.status(204).json(data);
   } catch (error) {
     res
       .status(500)

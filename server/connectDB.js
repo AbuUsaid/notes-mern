@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    mongoose.set('strictQuery', false);
+    mongoose.set('strictQuery', false); //removes command line warnings in console
     const conn = await mongoose.connect(process.env.MONGODB_URI);
     console.log(`Database Connected ${conn.connection.host}`);
   } catch (error) {
