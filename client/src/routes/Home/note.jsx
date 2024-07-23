@@ -1,17 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function UpdateNote() {
   const { id } = useParams();
-  const navigate = useNavigate;
 
   const baseUrl = `${import.meta.env.VITE_SERVER_URL}/api/notes/${id}`;
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +21,7 @@ function UpdateNote() {
         const data = await response.json();
         setTitle(data.title);
         setDescription(data.description);
+
         setIsLoading(false);
       } catch (error) {
         setError('Error fetching data. Please try again later.');
@@ -40,7 +37,7 @@ function UpdateNote() {
     try {
       const response = await fetch(baseUrl, {
         method: 'PUT',
-        header: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title,
           description,
@@ -53,36 +50,22 @@ function UpdateNote() {
       } else {
         console.log('Failed to submit data.');
       }
+
+      //clear the form fields or redirect after successful submisson
+      /*
+      setTitle('');
+      setDescription('');
+      */
     } catch (error) {
       console.log(error);
     }
   };
 
-  const removeNote = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(baseUrl, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        Navigate('/');
-      }
-    } catch (error) {}
-  };
-
   return (
     <div>
-      <div className="breadcrump-nav">
-        <Link to="/" className="back-button">
-          ⬅️back
-        </Link>
-
-        <button onClick={removeNote} className="delete">
-          ❌Remove
-        </button>
-      </div>
+      <Link to="/" className="back-button">
+        ⬅️Back
+      </Link>
 
       <form onSubmit={updateNote}>
         <div className="single-note">
@@ -95,7 +78,6 @@ function UpdateNote() {
               className="title"
             />
           </div>
-
           <div>
             <textarea
               value={description}
@@ -107,15 +89,16 @@ function UpdateNote() {
             ></textarea>
           </div>
         </div>
+
         <input
           type="submit"
-          value={submitted ? 'Saving note...' : '💾 Add Note'}
+          value={submitted ? 'Saving note...' : '💾Add note'}
           disabled={submitted}
         />
 
         <p className="text-center">
           {submitted && (
-            <div className="success-message">Note has been added</div>
+            <div className="success-message">Note has been updated!</div>
           )}
         </p>
       </form>
