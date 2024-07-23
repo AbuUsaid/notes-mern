@@ -22,7 +22,6 @@ function AddNote() {
       });
 
       if (response.ok) {
-        setTitle('');
         setSubmitted(true);
         setTimeout(() => setSubmitted(false), 2000);
       } else {

@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 function UpdateNote() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const baseUrl = `${import.meta.env.VITE_SERVER_URL}/api/notes/${id}`;
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,11 +64,30 @@ function UpdateNote() {
     }
   };
 
+  const removeNote = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(baseUrl, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        navigate('/');
+      }
+    } catch (error) {}
+  };
+
   return (
     <div>
-      <Link to="/" className="back-button">
-        ⬅️Back
-      </Link>
+      <div className="breadcrump-nav">
+        <Link to="/" className="back-button">
+          ⬅️Back
+        </Link>
+
+        <button onClick={removeNote} className="delete">
+          ❌Remove
+        </button>
+      </div>
 
       <form onSubmit={updateNote}>
         <div className="single-note">
