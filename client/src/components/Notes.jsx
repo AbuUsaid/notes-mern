@@ -37,14 +37,20 @@ function Notes() {
         <p>{error}</p>
       ) : (
         <ul className="notes">
+          <li className="add-note-button">
+            <Link to={`/add-note`}>+</Link>
+          </li>
+
           {data.map((item) => (
             <li key={item._id}>
               <Link to={`/note/${item._id}`}>
                 <h3>{item.title}</h3>
                 <p>
-                  {item.description.length > 50
+                  {item.description &&
+                  typeof item.description === 'string' &&
+                  item.description.length > 50
                     ? `${item.description.substring(0, 50)}...`
-                    : item.description}
+                    : item.description || 'No description available'}
                 </p>
               </Link>
             </li>
@@ -56,4 +62,3 @@ function Notes() {
 }
 
 export default Notes;
-``;
