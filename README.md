@@ -1,6 +1,5 @@
 # Note Keeper App
 
-A Note Keeper application built using the MERN stack. This app allows users to add, update, and delete notes efficiently.
 ![Alt text](noteapp.gif)
 
 ## Technologies Used
